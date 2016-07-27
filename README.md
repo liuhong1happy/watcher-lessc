@@ -19,16 +19,16 @@ But , You must specify `input` & `output` !
 
 		watcher-lessc
 
-	Usage: {OPTIONS}
+		Usage: {OPTIONS}
 
-	Options:
-	  --input, -i      Specify input file to watch/compile.               [required]
-	  --paths, -p      Specify search paths for @import directives.    [default: []]
-	  --compress, -c   Minify CSS output.                                           
-	  --filename, -f   Specify a filename, for better error messages. [default: "style.less"]
-	  --directory, -d  Specify input directory to watch.                            
-	  --output, -o     Specify output file path.                          [required]
-	  --help, -h       Show this message                                            
+		Options:
+		  --input, -i      Specify input file to watch/compile.               [required]
+		  --paths, -p      Specify search paths for @import directives.    [default: []]
+		  --compress, -c   Minify CSS output.                                           
+		  --filename, -f   Specify a filename, for better error messages. [default: "style.less"]
+		  --directory, -d  Specify input directory to watch.                            
+		  --output, -o     Specify output file path.                          [required]
+		  --help, -h       Show this message                                            
 
 2. Specify input `.less` file & output `.css` file
 

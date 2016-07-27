@@ -1,7 +1,7 @@
 {
   "name": "watcher-lessc",
   "description": "Watches your specified .less file and auto-compiles it to the specified .css file.",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "keywords": [
     "css",
     "less",
