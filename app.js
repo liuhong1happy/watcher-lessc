@@ -47,12 +47,12 @@ var argv = require('optimist')
         throw '';
       }
 }).argv;
-
+var LessPluginCleanCSS = require('less-plugin-clean-css'), cleanCSSPlugin = new LessPluginCleanCSS({advanced: true});
 var lessc = function(lessInput, lessOutput){
 	less.render(lessInput,{
       paths: argv.paths instanceof Array ? argv.paths : [argv.paths],  // Specify search paths for @import directives
-      filename: argv.filename, // Specify a filename, for better error messages
-      compress: argv.compress          // Minify CSS output
+      filename: argv.filename, // Specify a filename, for better error messages 
+	  plugins: (argv.compress?[cleanCSSPlugin]:[])  // Minify CSS output
     },
 	function(error, output) {
 		if (!error) {
