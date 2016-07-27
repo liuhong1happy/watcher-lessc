@@ -1,5 +1,4 @@
 # watcher-lessc
-===
 
 Watch `.less file` & `directory`  to compile to .css whenever file is saved.
 
@@ -12,8 +11,11 @@ Now ,You can :
 
 But , You must specify `input` & `output` !
 
+## Install
+
+	npm install -g watcher-lessc
+
 ## Usage
----
 
 1. Help documents
 
@@ -44,4 +46,4 @@ But , You must specify `input` & `output` !
 		
 ## Contact
 
-	If you have some questions, please email: [liuhong1.happy@163.com](liuhong1.happy@163.com) .
+If you have some questions, please email: [liuhong1.happy@163.com](liuhong1.happy@163.com) .
