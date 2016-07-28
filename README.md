@@ -1,5 +1,7 @@
 # watcher-lessc
 
+[![Version](https://img.shields.io/npm/v/watcher-lessc.svg)](https://www.npmjs.com/package/watcher-lessc)
+
 Watch `.less file` & `directory`  to compile to .css whenever file is saved.
 
 Now ,You can :
