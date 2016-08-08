@@ -5,11 +5,25 @@ var util = require('util');
 var path = require('path');
 var less = require('less');
 var watch = require('watch');
+var colors = require('colors');
+
+colors.setTheme({
+  info: 'green',
+  error: 'red'
+});
+console.info = function(title,content){
+		var strDate = ("["+new Date().toTimeString()+"]").info
+		console.log( strDate+ ("["+title+"]").info +" "+ content);
+}
+console.error = function(error){
+	var strDate = ("["+new Date().toTimeString()+"]").error
+	console.log( strDate+ "[error]".error +" "+ error);
+}
 
 var argv = require('optimist')
     .usage('Usage: {OPTIONS}')
 	.boolean(['compress'])
-    .wrap(80)
+    .wrap(100)
     .option('input', {
       alias: 'i',
       demand: 'i',
@@ -47,8 +61,10 @@ var argv = require('optimist')
         throw '';
       }
 }).argv;
+
 var LessPluginCleanCSS = require('less-plugin-clean-css'), cleanCSSPlugin = new LessPluginCleanCSS({advanced: true});
 var lessc = function(lessInput, lessOutput){
+	var start_time = new Date();
 	less.render(lessInput,{
       paths: argv.paths instanceof Array ? argv.paths : [argv.paths],  // Specify search paths for @import directives
       filename: argv.filename, // Specify a filename, for better error messages 
@@ -58,42 +74,27 @@ var lessc = function(lessInput, lessOutput){
 		if (!error) {
 			var fd = fs.openSync(lessOutput, "w");
 			fs.writeSync(fd, output.css, 0, "utf-8");
-			console.info((new Date()).toTimeString() + " watcher-lessc: Write to file: " + output_file);
+			var end_time = new Date();
+			var render_time = (end_time.valueOf() - start_time.valueOf()) +"ms";
+			console.info("render",render_time.red);
+			console.info("output",output_file);
 		} else {
-			console.error((new Date()).toTimeString() + " watcher-lessc: Write error: " + error);
+			console.error(error);
 		}
 	});
 }					
-less.logger.addListener({
-    debug: function(msg) {
-		console.debug(msg);
-    },
-    info: function(msg) {
-		console.info(msg);
-    },
-    warn: function(msg) {
-		console.warn(msg);
-    },
-    error: function(msg) {
-		console.error(msg);
-    }
-});
-
 
 var input_file = path.resolve(process.cwd(), argv.input);
 var output_file = path.resolve(process.cwd(), argv.output);
 var watch_directory = argv.directory ? path.resolve(process.cwd(), argv.directory): '';
 
-console.log((new Date()).toTimeString() + " watcher-lessc: InputFile: "+input_file);
-console.log((new Date()).toTimeString() + " watcher-lessc: OutputFile: "+ output_file);
 /**
  * Compiles the less files given by the input and ouput options
  */
 var compileInput = function (){
-    console.log((new Date()).toTimeString() + " watcher-lessc: Updated: " + output_file);
-    fs.readFile(input_file, 'utf-8',function(err,data){
-		if(err){  
-			console.log(data);  
+    fs.readFile(input_file, 'utf-8',function(error,data){
+		if(error){  
+			console.error(error);
 		}else{  
 			lessc(data,output_file);    
 		}  
@@ -106,14 +107,17 @@ var compileInput = function (){
  */
 if (watch_directory){
 	compileInput();
-	console.log((new Date()).toTimeString() + " watcher-lessc: Start Watch Tree: " + watch_directory);
+	
+	console.info("watch",watch_directory);
+
     watch.watchTree(watch_directory, function(f, current,previous){
 		if(current==previous) return;
         compileInput();
     });
 } else {
 	compileInput();
-	console.log((new Date()).toTimeString() + " watcher-lessc: Start Watch File: " + output_file);
+	
+	console.info("watch",input_file);
     fs.watchFile(input_file, function(current, previous) {
 		if(current==previous) return;
         compileInput();
